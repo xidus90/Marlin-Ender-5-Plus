@@ -3079,7 +3079,7 @@
   #endif
 #endif
 
-#if NONE(SolidBedMounts, SKRMiniE3V2, MachineCR10Orig)
+#if NONE(SolidBedMounts, SKRMiniE3V2, MachineCR10Orig, MachineCR30)
 // Add a menu item to move between bed corners for manual bed adjustment
   #define LEVEL_BED_CORNERS
 #endif
