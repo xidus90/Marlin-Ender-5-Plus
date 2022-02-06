@@ -2006,7 +2006,7 @@
  * The probe replaces the Z-MIN endstop and is used for Z homing.
  * (Automatically enables USE_PROBE_FOR_Z_HOMING.)
  */
-#if NONE(Creality422, Creality427, MachineEnder6) && DISABLED(Creality42XUseZMin) || DISABLED(ABL_BLTOUCH)
+#if NONE(Creality422, Creality427, MachineEnder6, MachineEnder7) && DISABLED(Creality42XUseZMin) || DISABLED(ABL_BLTOUCH)
   #define Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN
 #endif
 // Force the use of the probe for Z-axis homing
@@ -4133,7 +4133,7 @@
 // Third-party or vendor-customized controller interfaces.
 // Sources should be installed in 'src/lcd/extui'.
 //
-#if ANY(MachineCR10SPro, MachineCRX, MachineEnder5Plus, MachineCR10Max, MachineEnder6, MachineEnder7, MachineSermoonD1) && (NONE(GraphicLCD, SKRMiniE3V2, OrigLCD) || ENABLED(FORCE10SPRODISPLAY))
+#if ANY(MachineCR10SPro, MachineCRX, MachineEnder5Plus, MachineCR10Max, MachineEnder6, MachineEnder7, MachineSermoonD1, MachineCR10Smart) && (NONE(GraphicLCD, SKRMiniE3V2, OrigLCD) || ENABLED(FORCE10SPRODISPLAY))
   #ifndef FORCE10SPRODISPLAY
     #define FORCE10SPRODISPLAY
   #endif
@@ -4341,8 +4341,9 @@
 // Use software PWM to drive the fan, as for the heaters. This uses a very low frequency
 // which is not as annoying as with the hardware PWM. On the other hand, if this frequency
 // is too low, you should also increment SOFT_PWM_SCALE.
-//#define FAN_SOFT_PWM
-
+#if ANY(SKRPRO11, SKRMiniE3V2, MachineEnder6, MachineEnder7, Creality427, Creality422, SKR_CR6, CR6_452, MachineCR30, MachineCR6, MachineCR6Max, MachineCR10Smart)
+  #define FAN_SOFT_PWM
+#endif
 // Incrementing this by 1 will double the software PWM frequency,
 // affecting heaters, and the fan if FAN_SOFT_PWM is enabled.
 // However, control resolution will be halved for each increment;

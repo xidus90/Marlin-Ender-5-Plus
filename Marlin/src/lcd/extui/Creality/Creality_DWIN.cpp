@@ -273,6 +273,28 @@ void onIdle()
       rtscheck.RTS_SndData(2, AutoLevelIcon); /*Off*/
   #endif
 
+  #if HAS_FILAMENT_SENSOR
+    if(getFilamentRunoutEnabled())
+      rtscheck.RTS_SndData(3, RunoutToggle); /*On*/
+    else
+      rtscheck.RTS_SndData(2, RunoutToggle); /*Off*/
+  #endif
+
+  #if ENABLED(CASE_LIGHT_ENABLE)
+    if(getCaseLightState())
+      rtscheck.RTS_SndData(3, LedToggle); /*On*/
+    else
+      rtscheck.RTS_SndData(2, LedToggle); /*Off*/
+  #endif
+
+  #if ENABLED(POWER_LOSS_RECOVERY)
+    if(getPowerLossRecoveryEnabled())
+      rtscheck.RTS_SndData(3, PowerLossToggle); /*On*/
+    else
+      rtscheck.RTS_SndData(2, PowerLossToggle); /*Off*/
+  #endif
+
+
   if (startprogress == 0)
   {
     startprogress += 25;
@@ -787,6 +809,9 @@ void RTSSHOW::RTS_HandleData()
     case Jerk_Y:
     case Jerk_Z:
     case Jerk_E:
+    case RunoutToggle:
+    case PowerLossToggle:
+    case LedToggle:
       Checkkey = ManualSetTemp;
     break;
   }
@@ -1190,6 +1215,36 @@ void RTSSHOW::RTS_HandleData()
           }
         #endif
 
+        #if HAS_FILAMENT_SENSOR
+          else if(recdat.addr == RunoutToggle){
+            if(getFilamentRunoutEnabled())
+              setFilamentRunoutEnabled(false);
+            else
+              setFilamentRunoutEnabled(true);
+          }
+        #endif
+
+        #if ENABLED(POWER_LOSS_RECOVERY)
+          else if(recdat.addr == PowerLossToggle){
+            if(getPowerLossRecoveryEnabled())
+              setPowerLossRecoveryEnabled(false);
+            else
+              setPowerLossRecoveryEnabled(true);
+          }
+        #endif
+
+        #if ENABLED(CASE_LIGHT_ENABLE)
+          else if(recdat.addr == LedToggle){
+            if(getCaseLightState())
+              setCaseLightState(false);
+            else
+              setCaseLightState(true);
+          }
+        #endif
+
+
+
+
         #if HAS_PID_HEATING
           else if (recdat.addr == HotendPID_P) {
             setPIDValues(tmp_float_handling*10, getPIDValues_Ki(getActiveTool()), getPIDValues_Kd(getActiveTool()), getActiveTool());
@@ -1271,7 +1326,7 @@ void RTSSHOW::RTS_HandleData()
       else if (recdat.data[0] == 3) //Move
       {
         AxisPagenum = 0;
-        RTS_SndData(ExchangePageBase + 21, ExchangepageAddr);
+        RTS_SndData(ExchangePageBase + 71, ExchangepageAddr);
       }
       else if (recdat.data[0] == 4) //Language
       {
