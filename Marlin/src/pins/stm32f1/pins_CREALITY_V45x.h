@@ -105,13 +105,6 @@
 #define SD_DETECT_PIN                       PC7
 #define NO_SD_HOST_DRIVE                          // SD is only seen by the printer
 
-//
-// SD Card
-//
-#define SDCARD_CONNECTION                ONBOARD
-#define ONBOARD_SPI_DEVICE                     1
-#define SDIO_SUPPORT
-
 #define SDIO_SUPPORT                              // Extra added by Creality
 #define SDIO_CLOCK                       6000000  // In original source code overridden by Creality in sdio.h
 
@@ -119,4 +112,5 @@
 // Misc. Functions
 //
 #define CASE_LIGHT_PIN                      PA6
+
 #define LED_PIN                             PA6
