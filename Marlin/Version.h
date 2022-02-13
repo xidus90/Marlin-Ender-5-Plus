@@ -132,6 +132,8 @@
  */
 #if(ENABLED(MachineMini))
   #define CUSTOM_MACHINE_NAME "Mini SuPeR"
+#elif(ENABLED(MachineCR10Smart))
+  #define CUSTOM_MACHINE_NAME "TM3D CR10Smart"
 #elif(ENABLED(MachineEnder2))
   #define CUSTOM_MACHINE_NAME "TM3D Ender2"
 #elif(ENABLED(MachineEnder3))

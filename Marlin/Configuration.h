@@ -379,7 +379,6 @@
   #if NONE(ABL_UBL, ABL_BI)
     #define ABL_BI
   #endif
-  #define BedDC
 #endif
 
 #if ENABLED(OriginalCrealitySquareBoard)
@@ -414,9 +413,6 @@
     #define ABL_BI
   #endif
   #define lerdgeFilSensor
-  #if NONE(BedAC, BedDC)
-    #define BedDC
-  #endif
 #endif
 
 #if ENABLED(MachineCR10Max)
@@ -427,9 +423,6 @@
     #define ABL_BI
   #endif
   #define lerdgeFilSensor
-  #if NONE(BedAC, BedDC)
-    #define BedDC
-  #endif
 #endif
 
 #if ENABLED(MachineEnder5Plus)
@@ -444,16 +437,10 @@
   #if DISABLED(ABL_UBL)
     #define ABL_BI
   #endif
-  #if NONE(BedAC, BedDC)
-    #define BedDC
-  #endif
 #endif
 
-#if ANY(MachineCR10SV2, MachineCR10Smart)
+#if ANY(MachineCR10SV2)
   #define lerdgeFilSensor
-  #if NONE(BedAC, BedDC)
-    #define BedDC
-  #endif
 #endif
 
 #if ANY(MachineCR10SV2, MachineCR10Max, MachineCR10SProV2) && ANY(ABL_EZABL, ABL_NCSW, ABL_BLTOUCH, ABL_TOUCH_MI) && NONE(SKR13, SKR14, SKR14Turbo, SKRPRO11)
@@ -524,16 +511,10 @@
 #if ENABLED(MachineCRX)
   #define MachineCR10Std
   #define Dual_BowdenSplitterY
-  #if NONE(BedAC, BedDC)
-    #define BedDC
-  #endif
 #endif
 
 #if ANY(MachineEnder3V2, MachineEnder3Pro422, MachineEnder3Pro427, Creality422, Creality427, MachineEnder3Max, MachineEnder6, MachineEnder7, MachineSermoonD1)
   #define POWER_LOSS_RECOVERY //Screen will not compile without PLR
-  #if NONE(BedAC, BedDC)
-    #define BedDC
-  #endif
   #define CrealitySilentBoard
 #endif
 
@@ -598,9 +579,7 @@
     #define ABL_BI
   #endif
   #define SolidBedMounts
-  #if NONE(BedAC, BedDC)
-    #define BedDC
-  #endif
+
 #endif
 
 #if ENABLED(SKRPRO11)
