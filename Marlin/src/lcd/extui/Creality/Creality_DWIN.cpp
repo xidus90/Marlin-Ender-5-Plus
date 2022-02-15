@@ -2222,7 +2222,8 @@ void onPrintTimerStarted()
 void onPrintTimerPaused()
 {
 	SERIAL_ECHOLNPGM_P(PSTR("==onPrintTimerPaused=="));
-	rtscheck.RTS_SndData(ExchangePageBase + 87, ExchangepageAddr); //Display Pause Screen
+	rtscheck.RTS_SndData(ExchangePageBase + 78, ExchangepageAddr); //Display Pause Screen
+  onStatusChanged("Pausing...");
 }
 void onPrintTimerStopped()
 {
@@ -2312,29 +2313,29 @@ void onUserConfirmRequired(const char *const msg)
 
     case PAUSE_MESSAGE_PARKING:
     {
-      rtscheck.RTS_SndData(ExchangePageBase + 87, ExchangepageAddr);
+      rtscheck.RTS_SndData(ExchangePageBase + 78, ExchangepageAddr);
       onStatusChanged("Parking...");
       break;
     }
     case PAUSE_MESSAGE_CHANGING:{
-      rtscheck.RTS_SndData(ExchangePageBase + 87, ExchangepageAddr);
+      rtscheck.RTS_SndData(ExchangePageBase + 78, ExchangepageAddr);
       onStatusChanged("Beginning Filament Change");
       break;
     }
     case PAUSE_MESSAGE_UNLOAD:{
-      rtscheck.RTS_SndData(ExchangePageBase + 87, ExchangepageAddr);
+      rtscheck.RTS_SndData(ExchangePageBase + 78, ExchangepageAddr);
       onStatusChanged("Unloading...");
       break;
     }
     case PAUSE_MESSAGE_LOAD:{
-      rtscheck.RTS_SndData(ExchangePageBase + 87, ExchangepageAddr);
+      rtscheck.RTS_SndData(ExchangePageBase + 78, ExchangepageAddr);
       onStatusChanged("Reloading...");
       break;
     }
     case PAUSE_MESSAGE_RESUME:
     #if ENABLED(ADVANCED_PAUSE_CONTINUOUS_PURGE)
       case PAUSE_MESSAGE_PURGE:{
-        rtscheck.RTS_SndData(ExchangePageBase + 87, ExchangepageAddr);
+        rtscheck.RTS_SndData(ExchangePageBase + 78, ExchangepageAddr);
         onStatusChanged("Press Yes to Stop Purge");
         break;
       }
