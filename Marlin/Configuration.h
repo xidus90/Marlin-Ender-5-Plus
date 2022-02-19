@@ -3635,7 +3635,7 @@
 // By default Marlin assumes you have a buzzer with a fixed frequency.
 //
 #if NONE(MachineCR10Orig, SKRMiniE3V2)
-  #define SPEAKER
+  //#define SPEAKER
 #endif
 
 //
