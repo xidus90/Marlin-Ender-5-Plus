@@ -22,20 +22,20 @@ This branch adds support for the Creality touchscreen machines and was split off
 - [Sermoon D1](https://amzn.to/3LXfZeD)
 
 - CR10S, CR10S4, CR20 and Pro, CR10, CR10Mini, CR2020, Ender 4, Ender 2 - Legacy support
--- These configurations exist however due to age and product availability are no longer actively tested
+- These configurations exist however due to age and product availability are no longer actively tested
 
-- Coming Soon
--- [Ender 3 S1](https://www.tinymachines3d.com/products/ender-3-s1-3d-printer?rfsn=3419592.cc302fe)
--- [CR10 Smart Pro](https://www.tinymachines3d.com/products/cr-10-smart-pro-3d-printer?rfsn=3419592.cc302fe)
--- [Ender 2 Pro](https://www.tinymachines3d.com/products/ender-2-pro-3d-printer?rfsn=3419592.cc302fe)
--- [CR5 / Pro HT](https://amzn.to/3gWvpBt)
+## Coming Soon
+- [Ender 3 S1](https://www.tinymachines3d.com/products/ender-3-s1-3d-printer?rfsn=3419592.cc302fe)
+- [CR10 Smart Pro](https://www.tinymachines3d.com/products/cr-10-smart-pro-3d-printer?rfsn=3419592.cc302fe)
+- [Ender 2 Pro](https://www.tinymachines3d.com/products/ender-2-pro-3d-printer?rfsn=3419592.cc302fe)
+- [CR5 / Pro HT](https://amzn.to/3gWvpBt)
 
-- Resin machines below from Tiny Machines are listed simply as an additional way to help support the project. If youre considering buying one, please do so through the following links :
- -- [Halot One CL-60](https://www.tinymachines3d.com/products/halot-one-cl-60-resin-3d-printer?rfsn=3419592.cc302fe)
- -- [LD-002R](https://www.tinymachines3d.com/products/ld-002r-resin-printer?rfsn=3419592.cc302fe)
- -- [LD-002H](https://www.tinymachines3d.com/products/ld-002h-resin-3d-printer?rfsn=3419592.cc302fe)
- -- [LD-006](https://www.tinymachines3d.com/products/ld-006-resin-3d-printer?rfsn=3419592.cc302fe)
- -- [UW-02 Washer](https://www.tinymachines3d.com/products/uw-02-washing-curing-machine?rfsn=3419592.cc302fe)
+## Resin machines below from Tiny Machines are listed simply as an additional way to help support the project. If youre considering buying one, please do so through the following links :
+ - [Halot One CL-60](https://www.tinymachines3d.com/products/halot-one-cl-60-resin-3d-printer?rfsn=3419592.cc302fe)
+ - [LD-002R](https://www.tinymachines3d.com/products/ld-002r-resin-printer?rfsn=3419592.cc302fe)
+ - [LD-002H](https://www.tinymachines3d.com/products/ld-002h-resin-3d-printer?rfsn=3419592.cc302fe)
+ - [LD-006](https://www.tinymachines3d.com/products/ld-006-resin-3d-printer?rfsn=3419592.cc302fe)
+ - [UW-02 Washer](https://www.tinymachines3d.com/products/uw-02-washing-curing-machine?rfsn=3419592.cc302fe)
 
 
 Ender 3V2 has a dedicated file set. CR10 Smart has a dedicated high resolution screen set. Portrait displays use the CR6/E3 Touch variant and landscape use the combined set.
