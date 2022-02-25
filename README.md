@@ -5,7 +5,7 @@ This branch adds support for the Creality touchscreen machines and was split off
 - [CR10S Pro / V2](https://www.tinymachines3d.com/products/cr-10s-pro-v2-3d-printer?rfsn=3419592.cc302fe)
 - [CR10 Max](https://www.tinymachines3d.com/products/creality-cr-10-max-3d-printer?rfsn=3419592.cc302fe)
 - [Ender 5 Plus](https://www.tinymachines3d.com/products/ender-5-plus-silent-board-custom-dual-z-3d-printer?rfsn=3419592.cc302fe)
-- [Ender 6](https://amzn.to/3wMaoj3)
+- [Ender 6](https://amzn.to/3JRyOhi)
 - [CR-X / Pro](https://www.tinymachines3d.com/products/creality-cr-x-pro-3d-printer-with-dual-extruder-and-bl-touch?rfsn=3419592.cc302fe)
 - [CR10 V2 ](https://www.tinymachines3d.com/products/creality-cr-10-v2-3d-printer?rfsn=3419592.cc302fe)
 - [CR10 V3 ](https://www.tinymachines3d.com/products/creality-cr-10-v3-plus-3d-printer-with-genuine-e3d-direct-drive-extruder-and-bl-touch?rfsn=3419592.cc302fe)
