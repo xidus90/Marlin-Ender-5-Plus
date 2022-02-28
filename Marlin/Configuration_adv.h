@@ -2067,7 +2067,7 @@
   #endif
   #if ENABLED(BABYSTEP_ZPROBE_OFFSET)
     //#define BABYSTEP_HOTEND_Z_OFFSET      // For multiple hotends, babystep relative Z offsets
-    #if NONE(MachineCR10Orig, LowMemoryBoard, EXTENSIBLE_UI, SKRMiniE3V2, MachineEnder3V2, MachineCR6, MachineCR6Max, FORCEV2DISPLAY) && (DISABLED(MachineEnder4) || ENABLED(GraphicLCD))
+    #if NONE(MachineCR10Orig, LowMemoryBoard, EXTENSIBLE_UI, SKRMiniE3V2, MachineEnder3V2, MachineEnder3S1, MachineCR6, MachineCR6Max, FORCEV2DISPLAY) && (DISABLED(MachineEnder4) || ENABLED(GraphicLCD))
       #define BABYSTEP_ZPROBE_GFX_OVERLAY   // Enable graphical overlay on Z-offset editor
     #endif
   #endif
@@ -2451,7 +2451,7 @@
 // Therefore some clients abort after 30 seconds in a timeout.
 // Some other clients start sending commands while receiving a 'wait'.
 // This "wait" is only sent when the buffer is empty. 1 second is a good value here.
-#if NONE(MachineCR10Orig, LowMemoryBoard, MachineEnder3V2) || ENABLED(MelziHostOnly)
+#if NONE(MachineCR10Orig, LowMemoryBoard, MachineEnder3V2, MachineEnder3S1) || ENABLED(MelziHostOnly)
   #define NO_TIMEOUTS 1000 // Milliseconds
 #endif
 
