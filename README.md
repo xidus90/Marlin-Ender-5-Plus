@@ -20,6 +20,7 @@ This branch adds support for the Creality touchscreen machines and was split off
 - [Ender 7](https://www.tinymachines3d.com/products/ender-7-3d-printer?rfsn=3419592.cc302fe)
 - [CR30](https://www.tinymachines3d.com/products/cr-30-infinite-z-belt-3d-printer?rfsn=3419592.cc302fe)
 - [Sermoon D1](https://amzn.to/3LXfZeD)
+- [CR5 / Pro HT](https://amzn.to/3gWvpBt)
 
 - CR10S, CR10S4, CR20 and Pro, CR10, CR10Mini, CR2020, Ender 4, Ender 2 - Legacy support
 - These configurations exist however due to age and product availability are no longer actively tested
@@ -28,7 +29,7 @@ This branch adds support for the Creality touchscreen machines and was split off
 - [Ender 3 S1](https://www.tinymachines3d.com/products/ender-3-s1-3d-printer?rfsn=3419592.cc302fe)
 - [CR10 Smart Pro](https://www.tinymachines3d.com/products/cr-10-smart-pro-3d-printer?rfsn=3419592.cc302fe)
 - [Ender 2 Pro](https://www.tinymachines3d.com/products/ender-2-pro-3d-printer?rfsn=3419592.cc302fe)
-- [CR5 / Pro HT](https://amzn.to/3gWvpBt)
+- [CR200B]()
 
 ## Resin machines below from Tiny Machines are listed simply as an additional way to help support the project. If youre considering buying one, please do so through the following links :
  - [Halot One CL-60](https://www.tinymachines3d.com/products/halot-one-cl-60-resin-3d-printer?rfsn=3419592.cc302fe)
