@@ -2594,19 +2594,19 @@
     #define Y_MAX_POS 404
     #define Z_MAX_POS 405
     #define ClipClearance 5
-  #elif ANY(MachineEnder3, MachineEnder3V2, MachineEnder3S1)
+  #elif ANY(MachineEnder3, MachineEnder3V2)
     #define X_BED_SIZE 230
     #define Y_BED_SIZE 230
     #define Z_MAX_POS 250
     #define X_MAX_POS 245
-    #define Y_MAX_POS 250
+    #define Y_MAX_POS 240
     #define ClipClearance 15
   #elif ANY(MachineEnder3S1)
     #define X_BED_SIZE 220
     #define Y_BED_SIZE 220
     #define Z_MAX_POS 270
-    #define X_MAX_POS 225
-    #define Y_MAX_POS 225
+    #define X_MAX_POS 250
+    #define Y_MAX_POS 228
     #define ClipClearance 15
   #elif(ANY(MachineEnder4, MachineEnder5))
     #define X_BED_SIZE 220
@@ -3001,7 +3001,7 @@
    * Enable the G26 Mesh Validation Pattern tool.
    */
 #if NONE(MachineCR10Orig, SKRMiniE3V2)
-  //#define G26_MESH_VALIDATION   // Enable G26 mesh validation
+  #define G26_MESH_VALIDATION   // Enable G26 mesh validation
 #endif
   #if ENABLED(G26_MESH_VALIDATION)
     #define MESH_TEST_NOZZLE_SIZE    0.4  // (mm) Diameter of primary nozzle.
