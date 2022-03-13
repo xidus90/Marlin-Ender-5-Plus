@@ -543,16 +543,6 @@
   #define HAS_SERVICE_INTERVALS 1
 #endif
 
-#if ENABLED(FILAMENT_RUNOUT_SENSOR)
-  #define HAS_FILAMENT_SENSOR 1
-  #if NUM_RUNOUT_SENSORS > 1
-    #define MULTI_FILAMENT_SENSOR 1
-  #endif
-  #if ENABLED(MIXING_EXTRUDER)
-    #define WATCH_ALL_RUNOUT_SENSORS
-  #endif
-#endif
-
 // Probe Temperature Compensation
 #if !TEMP_SENSOR_PROBE
   #undef PTC_PROBE
