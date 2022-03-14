@@ -832,10 +832,14 @@
 /**
  * Fill in undefined Filament Sensor options
  */
-#ifndef NUM_RUNOUT_SENSORS
-  #define NUM_RUNOUT_SENSORS E_STEPPERS
-#endif
 #if ENABLED(FILAMENT_RUNOUT_SENSOR)
+  #define HAS_FILAMENT_SENSOR 1
+  #ifndef NUM_RUNOUT_SENSORS
+    #define NUM_RUNOUT_SENSORS E_STEPPERS
+  #endif
+  #if ENABLED(MIXING_EXTRUDER)
+    #define WATCH_ALL_RUNOUT_SENSORS
+  #endif
   #if NUM_RUNOUT_SENSORS >= 1
     #ifndef FIL_RUNOUT1_PULLUP
       #define FIL_RUNOUT1_PULLUP FIL_RUNOUT_PULLUP
@@ -845,6 +849,7 @@
     #endif
   #endif
   #if NUM_RUNOUT_SENSORS >= 2
+    #define MULTI_FILAMENT_SENSOR 1
     #ifndef FIL_RUNOUT2_PULLUP
       #define FIL_RUNOUT2_PULLUP FIL_RUNOUT_PULLUP
     #endif
@@ -885,7 +890,6 @@
     #endif
   #endif
   #if NUM_RUNOUT_SENSORS >= 7
-
     #ifndef FIL_RUNOUT7_PULLUP
       #define FIL_RUNOUT7_PULLUP FIL_RUNOUT_PULLUP
     #endif
@@ -900,14 +904,6 @@
     #ifndef FIL_RUNOUT8_PULLDOWN
       #define FIL_RUNOUT8_PULLDOWN FIL_RUNOUT_PULLDOWN
     #endif
-  #endif
-
-  #define HAS_FILAMENT_SENSOR 1
-  #if NUM_RUNOUT_SENSORS > 1
-    #define MULTI_FILAMENT_SENSOR 1
-  #endif
-  #if ENABLED(MIXING_EXTRUDER)
-    #define WATCH_ALL_RUNOUT_SENSORS
   #endif
 #endif // FILAMENT_RUNOUT_SENSOR
 
