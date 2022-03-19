@@ -439,7 +439,7 @@
   #endif
 #endif
 
-#if ANY(MachineCR5, MachineEnder3S1)
+#if ENABLED(MachineEnder3S1)
   #if NONE(ABL_NCSW, ABL_EZABL, ABL_BLTOUCH)
     #define ABL_BLTOUCH
   #endif
