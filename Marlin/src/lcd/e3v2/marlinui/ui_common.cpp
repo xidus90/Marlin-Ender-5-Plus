@@ -122,6 +122,7 @@ void MarlinUI::clear_lcd() {
 
   void MarlinUI::bootscreen_completion(const millis_t sofar) {
     if ((BOOTSCREEN_TIMEOUT) > sofar) safe_delay((BOOTSCREEN_TIMEOUT) - sofar);
+    DWIN_JPG_ShowAndCache(3);
     clear_lcd();
   }
 
