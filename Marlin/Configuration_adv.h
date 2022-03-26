@@ -1398,7 +1398,7 @@
     #endif
   #endif
 
-  #if NONE(MachineCR10Orig, LowMemoryBoard, SKRMiniE3V2, MachineEnder3V2)
+  #if NONE(MachineCR10Orig, LowMemoryBoard, SKRMiniE3V2)
   // Scroll a longer status message into view
     #define STATUS_MESSAGE_SCROLLING
   #endif

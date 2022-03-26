@@ -84,6 +84,7 @@ void MarlinUI::init_lcd() { DWIN_Startup(); }
 // This LCD should clear where it will draw anew
 void MarlinUI::clear_lcd() {
   DWIN_ICON_AnimationControl(0x0000); // disable all icon animations
+  DWIN_JPG_ShowAndCache(3);
   DWIN_Frame_Clear(Color_Bg_Black);
   DWIN_UpdateLCD();
 
@@ -93,6 +94,19 @@ void MarlinUI::clear_lcd() {
 #if ENABLED(SHOW_BOOTSCREEN)
 
   void MarlinUI::show_bootscreen() {
+    //#if ENABLED(CUSTOM_STATUS_SCREEN_IMAGE)
+    #undef CUSTOM_BOOTSCREEN_TIMEOUT
+      //#ifndef CUSTOM_BOOTSCREEN_TIMEOUT
+        #define CUSTOM_BOOTSCREEN_TIMEOUT 3000
+      //#endif
+      #define LOGO_CENTER (280 / 2)
+      #define INFO_CENTER ((LCD_PIXEL_WIDTH) - 200 / 2)
+      #define VERSION_Y   84
+      DWIN_Draw_String(false, font10x20, Color_Yellow, Color_Bg_Black, INFO_CENTER - (dwin_string.length() * 10) / 2, VERSION_Y, S(dwin_string.string()));
+      safe_delay(CUSTOM_BOOTSCREEN_TIMEOUT);
+
+    //#endif
+
     clear_lcd();
     dwin_string.set(F(SHORT_BUILD_VERSION));
 
@@ -122,7 +136,6 @@ void MarlinUI::clear_lcd() {
 
   void MarlinUI::bootscreen_completion(const millis_t sofar) {
     if ((BOOTSCREEN_TIMEOUT) > sofar) safe_delay((BOOTSCREEN_TIMEOUT) - sofar);
-    DWIN_JPG_ShowAndCache(3);
     clear_lcd();
   }
 
@@ -171,9 +184,11 @@ void MarlinUI::draw_status_message(const bool blink) {
   dwin_font.solid = true;
   dwin_font.fg = Color_White;
   dwin_font.bg = Color_Bg_Black;
+  DWIN_Draw_Box(1, Color_Bg_Black, 0, (LCD_PIXEL_HEIGHT - (STAT_FONT_HEIGHT) - 1), 272, STAT_FONT_HEIGHT + 1);
+
   lcd_moveto_xy(0, LCD_PIXEL_HEIGHT - (STAT_FONT_HEIGHT) - 1);
 
-  constexpr uint8_t max_status_chars = (LCD_PIXEL_WIDTH) / (STAT_FONT_WIDTH);
+  constexpr uint8_t max_status_chars = 19; // (LCD_PIXEL_WIDTH) / (STAT_FONT_WIDTH);
 
   auto status_changed = []{
     static uint16_t old_hash = 0x0000;
