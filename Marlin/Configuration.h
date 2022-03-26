@@ -1754,7 +1754,7 @@
 
 // Enable this feature if all enabled endstop pins are interrupt-capable.
 // This will remove the need to poll the interrupt pins, saving many CPU cycles.
-#if ANY(MachineEnder3V2, MachineEnder3S1) && NONE(SKRE3Turbo, SKR14Turbo, SKR14, SKR13)
+#if ANY(MachineEnder3V2, MachineEnder3S1, Creality422) && NONE(SKRE3Turbo, SKR14Turbo, SKR14, SKR13)
   #define ENDSTOP_INTERRUPTS_FEATURE
 #endif
 
@@ -1770,7 +1770,7 @@
  *
  * :[2,3,4,5,6,7]
  */
-#if ANY(MachineEnder5Plus, CableExtensionNoiseFilter, MachineCR6, MachineCR6Max, MachineEnder6, MachineCR10Smart)
+#if ANY(MachineEnder5Plus, CableExtensionNoiseFilter, MachineCR6, MachineCR6Max, MachineEnder6, MachineCR10Smart, MachineSermoonD1)
   #define ENDSTOP_NOISE_THRESHOLD 2
 #endif
 
@@ -3774,7 +3774,7 @@
 #elif ANY(MachineCR20, MachineCR2020)
   #define MKS_MINI_12864
 #elif ANY(MachineEnder3V2, FORCEV2DISPLAY, MachineEnder3S1)
-  #define DWIN_CREALITY_LCD_JYERSUI
+  #define DWIN_MARLINUI_PORTRAIT
 #elif ANY(OrigLCD, MachineCR10Orig, MachineEnder3Pro422, MachineEnder3Pro427, MachineEnder3Max, SKRMiniE3V2, SKRE3Turbo) && NONE(GraphicLCD, MachineEnder3Touchscreen, FORCE10SPRODISPLAY)
   #define CR10_STOCKDISPLAY
 #elif NONE(MachineCR10SPro, MachineCRX, MachineEnder5Plus, MachineCR10Max, OrigLCD, MachineCR10Orig, SKRMiniE3V2, FORCE10SPRODISPLAY, MachineCR6, MachineCR6Max, MachineCR10Smart, MachineEnder3Touchscreen) || ENABLED(GraphicLCD)
