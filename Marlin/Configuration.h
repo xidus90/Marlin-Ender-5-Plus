@@ -636,8 +636,11 @@
   #define SHOW_BOOTSCREEN
 
 // Show the bitmap in Marlin/_Bootscreen.h on startup.
-  #if DISABLED(MachineEnder3V2, MachineEnder3S1, MachineCR6, MachineCR6Max, MachineEnder3Touchscreen, FORCEV2DISPLAY)
+  #if DISABLED(MachineCR6, MachineCR6Max, MachineEnder3Touchscreen)
     #define SHOW_CUSTOM_BOOTSCREEN
+  #endif
+
+  #if DISABLED(MachineEnder3V2, MachineEnder3S1, MachineCR6, MachineCR6Max, MachineEnder3Touchscreen, FORCEV2DISPLAY)
     // Show the bitmap in Marlin/_Statusscreen.h on the status screen.
     #define CUSTOM_STATUS_SCREEN_IMAGE
   #endif
