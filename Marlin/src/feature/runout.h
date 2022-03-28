@@ -65,6 +65,10 @@ enum RunoutMode : uint8_t {
   RM_NONE,
   RM_OUT_ON_LOW,
   RM_OUT_ON_HIGH,
+  RM_RESERVED3,
+  RM_RESERVED4,
+  RM_RESERVED5,
+  RM_RESERVED6,
   RM_MOTION_SENSOR
 };
 
