@@ -112,9 +112,6 @@
 
 #if HAS_FILAMENT_SENSOR
   #include "../feature/runout.h"
-  #define NRS NUM_RUNOUT_SENSORS
-#else
-  #define NRS 1
 #endif
 
 #if ENABLED(EXTRA_LIN_ADVANCE_K)
@@ -235,9 +232,11 @@ typedef struct SettingsDataStruct {
   //
   // FILAMENT_RUNOUT_SENSOR
   //
-  bool runout_enabled[NRS];                             // M591 S
-  float runout_distance_mm[NRS];                        // M591 D
-  uint8_t runout_mode[NRS];                             // M591 P
+  #if HAS_FILAMENT_SENSOR
+    bool runout_enabled[NUM_RUNOUT_SENSORS];            // M591 S
+    float runout_distance_mm[NUM_RUNOUT_SENSORS];       // M591 D
+    uint8_t runout_mode[NUM_RUNOUT_SENSORS];            // M591 P
+  #endif
 
   //
   // ENABLE_LEVELING_FADE_HEIGHT
@@ -278,7 +277,9 @@ typedef struct SettingsDataStruct {
   // X_AXIS_TWIST_COMPENSATION
   //
   #if ENABLED(X_AXIS_TWIST_COMPENSATION)
-    XATC xatc;                                          // M423 X Z
+    float xatc_spacing;                                 // M423 X Z
+    float xatc_start;
+    xatc_array_t xatc_z_offset;
   #endif
 
   //
@@ -781,29 +782,23 @@ void MarlinSettings::postprocess() {
     //
     // Hotend Offsets, if any
     //
-    {
-      #if HAS_HOTEND_OFFSET
-        // Skip hotend 0 which must be 0
-        LOOP_S_L_N(e, 1, HOTENDS)
-          EEPROM_WRITE(hotend_offset[e]);
-      #endif
-    }
+    #if HAS_HOTEND_OFFSET
+      // Skip hotend 0 which must be 0
+      LOOP_S_L_N(e, 1, HOTENDS)
+        EEPROM_WRITE(hotend_offset[e]);
+    #endif
 
     //
     // Filament Runout Sensor
     //
+    #if HAS_FILAMENT_SENSOR
     {
       _FIELD_TEST(runout_enabled);
-      #if HAS_FILAMENT_SENSOR
-        LOOP_L_N(e, NRS) EEPROM_WRITE(runout.enabled[e]);
-        LOOP_L_N(e, NRS) EEPROM_WRITE(runout.runout_distance(e));
-        LOOP_L_N(e, NRS) EEPROM_WRITE(runout.mode[e]);
-      #else
-        EEPROM_WRITE((int8_t)-1);
-        EEPROM_WRITE((float)-0.0f);
-        EEPROM_WRITE((uint8_t)0);
-      #endif
+      LOOP_L_N(e, NUM_RUNOUT_SENSORS) EEPROM_WRITE(runout.enabled[e]);
+      LOOP_L_N(e, NUM_RUNOUT_SENSORS) EEPROM_WRITE(runout.runout_distance(e));
+      LOOP_L_N(e, NUM_RUNOUT_SENSORS) EEPROM_WRITE(runout.mode[e]);
     }
+    #endif
 
     //
     // Global Leveling
@@ -897,7 +892,7 @@ void MarlinSettings::postprocess() {
     // X Axis Twist Compensation
     //
     #if ENABLED(X_AXIS_TWIST_COMPENSATION)
-      _FIELD_TEST(xatc);
+      _FIELD_TEST(xatc_spacing);
       EEPROM_WRITE(xatc.spacing);
       EEPROM_WRITE(xatc.start);
       EEPROM_WRITE(xatc.z_offset);
@@ -1707,30 +1702,28 @@ void MarlinSettings::postprocess() {
       //
       // Filament Runout Sensor
       //
+      #if HAS_FILAMENT_SENSOR
       {
         _FIELD_TEST(runout_enabled);
 
-        int8_t runout_enabled[NRS];
-        float runout_distance_mm[NRS];
-        uint8_t runout_mode[NRS];
+        bool runout_enabled[NUM_RUNOUT_SENSORS];
+        float runout_distance_mm[NUM_RUNOUT_SENSORS];
+        RunoutMode runout_mode[NUM_RUNOUT_SENSORS];
 
-        LOOP_S_L_N(e, 0, NRS) EEPROM_READ(runout_enabled[e]);
-        LOOP_S_L_N(e, 0, NRS) EEPROM_READ(runout_distance_mm[e]);
-        LOOP_S_L_N(e, 0, NRS) EEPROM_READ(runout_mode[e]);
+        EEPROM_READ(runout_enabled);
+        EEPROM_READ(runout_distance_mm);
+        EEPROM_READ(runout_mode);
 
-        #if HAS_FILAMENT_SENSOR
-          if (!validating) {
-            LOOP_S_L_N(e, 0, NRS) {
-              if (runout_enabled[e] >= 0) {
-                runout.enabled[e] = (runout_enabled[e] > 0);
-                runout.set_runout_distance(runout_distance_mm[e], e);
-                runout.mode[e] = runout_mode[e];
-              }
-            }
-            runout.reset();
+        if (!validating) {
+          LOOP_S_L_N(e, 0, NUM_RUNOUT_SENSORS) {
+            runout.enabled[e] = runout_enabled[e];
+            runout.set_runout_distance(runout_distance_mm[e], e);
+            runout.mode[e] = runout_mode[e];
           }
-        #endif
+          runout.reset();
+        }
       }
+      #endif
 
       //
       // Global Leveling
@@ -1816,7 +1809,7 @@ void MarlinSettings::postprocess() {
       // X Axis Twist Compensation
       //
       #if ENABLED(X_AXIS_TWIST_COMPENSATION)
-        _FIELD_TEST(xatc);
+        _FIELD_TEST(xatc_spacing);
         EEPROM_READ(xatc.spacing);
         EEPROM_READ(xatc.start);
         EEPROM_READ(xatc.z_offset);
@@ -2797,12 +2790,12 @@ void MarlinSettings::reset() {
     constexpr bool fred[] = FIL_RUNOUT_ENABLED;
     constexpr uint8_t frm[] = FIL_RUNOUT_MODE;
     constexpr float frd[] = FIL_RUNOUT_DISTANCE_MM;
-    static_assert(COUNT(fred) == NRS, "FIL_RUNOUT_ENABLED must have NUM_RUNOUT_SENSORS values.");
-    static_assert(COUNT(frm) == NRS, "FIL_RUNOUT_MODE must have NUM_RUNOUT_SENSORS values.");
-    static_assert(COUNT(frd) == NRS, "FIL_RUNOUT_DISTANCE_MM must have NUM_RUNOUT_SENSORS values.");
+    static_assert(COUNT(fred) == NUM_RUNOUT_SENSORS, "FIL_RUNOUT_ENABLED must have NUM_RUNOUT_SENSORS values.");
+    static_assert(COUNT(frm) == NUM_RUNOUT_SENSORS, "FIL_RUNOUT_MODE must have NUM_RUNOUT_SENSORS values.");
+    static_assert(COUNT(frd) == NUM_RUNOUT_SENSORS, "FIL_RUNOUT_DISTANCE_MM must have NUM_RUNOUT_SENSORS values.");
     COPY(runout.enabled, fred);
     COPY(runout.mode, frm);
-    LOOP_L_N(e, NRS) runout.set_runout_distance(frd[e], e);
+    LOOP_L_N(e, NUM_RUNOUT_SENSORS) runout.set_runout_distance(frd[e], e);
     runout.reset();
   #endif
 
@@ -3148,9 +3141,9 @@ void MarlinSettings::reset() {
   //
 
   #if ENABLED(LIN_ADVANCE)
-    LOOP_L_N(i, EXTRUDERS) {
-      planner.extruder_advance_K[i] = LIN_ADVANCE_K;
-      TERN_(EXTRA_LIN_ADVANCE_K, other_extruder_advance_K[i] = LIN_ADVANCE_K);
+    EXTRUDER_LOOP() {
+      planner.extruder_advance_K[e] = LIN_ADVANCE_K;
+      TERN_(EXTRA_LIN_ADVANCE_K, other_extruder_advance_K[e] = LIN_ADVANCE_K);
     }
   #endif
 
@@ -3195,7 +3188,7 @@ void MarlinSettings::reset() {
   // Advanced Pause filament load & unload lengths
   //
   #if ENABLED(ADVANCED_PAUSE_FEATURE)
-    LOOP_L_N(e, EXTRUDERS) {
+    EXTRUDER_LOOP() {
       fc_settings[e].unload_length = FILAMENT_CHANGE_UNLOAD_LENGTH;
       fc_settings[e].load_length = FILAMENT_CHANGE_FAST_LOAD_LENGTH;
     }
