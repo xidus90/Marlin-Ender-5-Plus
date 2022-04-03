@@ -52,6 +52,7 @@
 
 
 //STM32F103RE Machines
+//#define MachineEnder2Pro
 //#define MachineEnder3V2
 //#define MachineEnder3S1
 //#define MachineEnder3Max
@@ -557,7 +558,7 @@
   #define lerdgeFilSensor
 #endif
 
-#if (EITHER(Creality422, Creality427) && DISABLED(MachineEnder3V2)) || BOTH(OrigLCD, MachineEnder6)
+#if (ANY(Creality422, Creality427, MachineEnder2Pro) && DISABLED(MachineEnder3V2)) || BOTH(OrigLCD, MachineEnder6)
   #ifndef FORCE10SPRODISPLAY
     #ifndef MachineEnder3Touchscreen
       #ifndef FORCEV2DISPLAY
@@ -661,7 +662,7 @@
  */
 #if ANY(SKR13, SKR14, SKR14Turbo, SKRPRO11, SKRMiniE3V2, SKRE3Turbo, SKR_CR6)
   #define SERIAL_PORT -1
-#elif ANY(MachineCR10Smart, MachineCR10SmartPro)
+#elif ANY(MachineCR10Smart, MachineCR10SmartPro, MachineEnder2Pro)
   #define SERIAL_PORT 1
 #elif ANY(MachineEnder3V2, MachineEnder3S1, MachineEnder3Max, MachineEnder3Pro422, MachineEnder3Pro427, Creality422, Creality427, MachineEnder6, MachineCR6, MachineCR6Max, MachineSermoonD1, MachineCR30, MachineEnder7)
   #define SERIAL_PORT 1
@@ -702,7 +703,7 @@
   #define LCD_SERIAL_PORT 2
   #define LCD_BAUDRATE 115200
   #define SERIAL_CATCHALL 1
-#elif ANY(Creality422, Creality427) && NONE(MachineEnder3V2, MachineEnder3S1, FORCE10SPRODISPLAY, MachineEnder3Touchscreen)
+#elif ANY(Creality422, Creality427, MachineEnder2Pro) && NONE(MachineEnder3V2, MachineEnder3S1, FORCE10SPRODISPLAY, MachineEnder3Touchscreen)
   #define SERIAL_PORT_2 3
 #endif
 
@@ -778,6 +779,8 @@
     #define MOTHERBOARD BOARD_CREALITY_V4210
   #elif ANY(MachineCR6, MachineCR6Max, MachineCR10Smart, MachineCR10SmartPro)
     #define MOTHERBOARD BOARD_CREALITY_V453
+  #elif ENABLED(MachineEnder2Pro)
+    #define MOTHERBOARD BOARD_CREALITY_V423
   #else
     #define MOTHERBOARD BOARD_RAMPS_CREALITY
   #endif
@@ -1762,7 +1765,7 @@
 
 // Enable this feature if all enabled endstop pins are interrupt-capable.
 // This will remove the need to poll the interrupt pins, saving many CPU cycles.
-#if ANY(MachineEnder3V2, MachineEnder3S1, Creality422) && NONE(SKRE3Turbo, SKR14Turbo, SKR14, SKR13)
+#if ANY(MachineEnder3V2, MachineEnder3S1, Creality422, MachineEnder2Pro) && NONE(SKRE3Turbo, SKR14Turbo, SKR14, SKR13)
   #define ENDSTOP_INTERRUPTS_FEATURE
 #endif
 
@@ -1862,7 +1865,7 @@
  * Override with M203
  *                                      X, Y, Z, E0 [, E1[, E2[, E3[, E4[, E5]]]]]
  */
-#if ENABLED(MachineCR20Pro)
+#if ANY(MachineCR20Pro, MachineEnder2Pro)
   #define DEFAULT_MAX_FEEDRATE          { 750, 750, 10, 75 }
   #define DEFAULT_MAX_ACCELERATION      { 2000, 2000, 100, 75 }
   #define DEFAULT_ACCELERATION          750    // X, Y, Z and E acceleration for printing moves
@@ -2012,7 +2015,7 @@
  * The probe replaces the Z-MIN endstop and is used for Z homing.
  * (Automatically enables USE_PROBE_FOR_Z_HOMING.)
  */
-#if NONE(Creality422, Creality427, MachineEnder6, MachineEnder7, MachineCR5) && DISABLED(Creality42XUseZMin) || DISABLED(ABL_BLTOUCH)
+#if NONE(Creality422, Creality427, MachineEnder6, MachineEnder7, MachineCR5, MachineEnder2Pro) && DISABLED(Creality42XUseZMin) || DISABLED(ABL_BLTOUCH)
   #define Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN
 #endif
 // Force the use of the probe for Z-axis homing
@@ -2581,6 +2584,13 @@
     #define X_MAX_POS 150
     #define Y_MAX_POS 150
     #define ClipClearance 15
+    #elif ENABLED(MachineEnder2Pro)
+    #define X_BED_SIZE 165
+    #define Y_BED_SIZE 165
+    #define Z_MAX_POS 180
+    #define X_MAX_POS 165
+    #define Y_MAX_POS 165
+    #define ClipClearance 15
   #elif ENABLED(MachineEnder3Max)
     #define X_BED_SIZE 300
     #define Y_BED_SIZE 300
@@ -2744,6 +2754,9 @@
 #if ENABLED(MicroswissDirectDrive)
   #define X_MIN_POS -15
   #define Y_MIN_POS -10
+#elif ENABLED(MachineEnder2Pro)
+  #define X_MIN_POS -18
+  #define Y_MIN_POS -2
 #elif ENABLED(TOUCH_MI_PROBE)
   #define X_MIN_POS -4
   #define Y_MIN_POS -10
@@ -4367,7 +4380,7 @@
 // Use software PWM to drive the fan, as for the heaters. This uses a very low frequency
 // which is not as annoying as with the hardware PWM. On the other hand, if this frequency
 // is too low, you should also increment SOFT_PWM_SCALE.
-#if ANY(SKRPRO11, SKRMiniE3V2, MachineEnder6, MachineEnder7, Creality427, Creality422, SKR_CR6, CR6_452, MachineCR30, MachineCR6, MachineCR6Max, MachineCR10Smart, MachineCR10SmartPro, MachineEnder3S1)
+#if ANY(SKRPRO11, SKRMiniE3V2, MachineEnder6, MachineEnder7, Creality427, Creality422, SKR_CR6, CR6_452, MachineCR30, MachineCR6, MachineCR6Max, MachineCR10Smart, MachineCR10SmartPro, MachineEnder3S1, MachineEnder2Pro)
   #define FAN_SOFT_PWM
 #endif
 // Incrementing this by 1 will double the software PWM frequency,

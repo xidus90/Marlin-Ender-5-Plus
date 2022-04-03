@@ -39,6 +39,8 @@
   #define VerChar1 "M"
 #elif(ENABLED(MachineEnder2))
   #define VerChar1 "E2"
+#elif(ENABLED(MachineEnder2Pro))
+  #define VerChar1 "E2P"
 #elif(ENABLED(MachineEnder3))
   #define VerChar1 "E3"
 #elif ENABLED(MachineEnder3V2)
@@ -138,8 +140,12 @@
   #define CUSTOM_MACHINE_NAME "Mini SuPeR"
 #elif(ENABLED(MachineCR10Smart))
   #define CUSTOM_MACHINE_NAME "TM3D CR10Smart"
+#elif(ENABLED(MachineCR10SmartPro))
+  #define CUSTOM_MACHINE_NAME "TM3D CR10SmartPro"
 #elif(ENABLED(MachineEnder2))
   #define CUSTOM_MACHINE_NAME "TM3D Ender2"
+#elif(ENABLED(MachineEnder2Pro))
+  #define CUSTOM_MACHINE_NAME "TM3D Ender2 Pro"
 #elif(ENABLED(MachineEnder3))
   #define CUSTOM_MACHINE_NAME "TM3D Ender3"
 #elif(ENABLED(MachineEnder3Max))
