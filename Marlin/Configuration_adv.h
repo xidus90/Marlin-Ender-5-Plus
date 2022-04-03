@@ -702,7 +702,7 @@
 /**
  * M355 Case Light on-off / brightness
  */
-#if ANY(EnclosureLight, MachineCR6, MachineCR6Max, MachineCR10Smart, MachineCR5)
+#if ANY(EnclosureLight, MachineCR6, MachineCR6Max, MachineCR10Smart, MachineCR10SmartPro, MachineCR5)
   #define CASE_LIGHT_ENABLE
 #endif
 #if ENABLED(CASE_LIGHT_ENABLE)
@@ -710,7 +710,7 @@
     #define CASE_LIGHT_PIN 65                  // Override the default pin if needed
   #elif ENABLED(MachineCR5)
     #define CASE_LIGHT_PIN 7
-  #elif NONE(MachineCR6, MachineCR6Max, MachineCR10Smart)
+  #elif NONE(MachineCR6, MachineCR6Max, MachineCR10Smart, MachineCR10SmartPro)
     #define CASE_LIGHT_PIN 12                  // Override the default pin if needed
   #endif
   #define INVERT_CASE_LIGHT false             // Set true if Case Light is ON when pin is LOW
@@ -941,7 +941,7 @@
    * differs, a mode set eeprom write will be completed at initialization.
    * Use the option below to force an eeprom write to a V3.1 probe regardless.
    */
-  #if NONE(SKR13, SKR14, SKR14Turbo, SKRPRO11, SKRMiniE3V2, MachineEnder3S1, Creality422, Creality427, MachineEnder6, MachineEnder7, MachineSermoonD1, MachineCR30, MachineCR6, MachineCR6Max)
+  #if NONE(SKR13, SKR14, SKR14Turbo, SKRPRO11, SKRMiniE3V2, MachineEnder3S1, Creality422, Creality427, MachineEnder6, MachineEnder7, MachineSermoonD1, MachineCR30, MachineCR6, MachineCR6Max, MachineCR10SmartPro)
     #define BLTOUCH_SET_5V_MODE
   #endif
   /**
