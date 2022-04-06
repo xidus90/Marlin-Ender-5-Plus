@@ -458,7 +458,7 @@
   #define SpriteExtruder
 #endif
 
-#if ANY(MachineCR10SV2)
+#if ANY(MachineCR10SV2, MachineEnder2Pro)
   #define lerdgeFilSensor
 #endif
 
@@ -3465,7 +3465,7 @@
 
 #if ENABLED(NOZZLE_PARK_FEATURE)
   // Specify a park position as { X, Y, Z_raise }
-  #if(ENABLED(MachineEnder2))
+  #if(ANY(MachineEnder2, MachineEnder2Pro))
     #define NOZZLE_PARK_POINT { (0), (0), 10 }
   #else
     #define NOZZLE_PARK_POINT { (50), (10), 10 }
