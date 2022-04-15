@@ -458,7 +458,7 @@
   #define SpriteExtruder
 #endif
 
-#if ANY(MachineCR10SV2, MachineEnder2Pro)
+#if ANY(MachineCR10SV2)
   #define lerdgeFilSensor
 #endif
 
