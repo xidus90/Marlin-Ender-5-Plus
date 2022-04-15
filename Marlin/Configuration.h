@@ -2106,7 +2106,7 @@
  * The probe replaces the Z-MIN endstop and is used for Z homing.
  * (Automatically enables USE_PROBE_FOR_Z_HOMING.)
  */
-#if NONE(Creality422, Creality427, MachineEnder6, MachineEnder7, MachineCR5, MachineEnder2Pro) && DISABLED(Creality42XUseZMin) || DISABLED(ABL_BLTOUCH)
+#if NONE(Creality422, Creality427, MachineEnder6, MachineEnder7, MachineCR5, MachineEnder2Pro, MachineEnder3S1) && DISABLED(Creality42XUseZMin) || DISABLED(ABL_BLTOUCH)
   #define Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN
 #endif
 // Force the use of the probe for Z-axis homing
@@ -2972,10 +2972,10 @@
 
   #if ENABLED(FilamentEncoder)
     #define FIL_RUNOUT_MODE    { 7 }    // Default mode for sensors E0[, E1[, E2[, E3...]]]. 0:NONE  1:Switch NO  2:Switch NC  7:Motion Sensor Override with M591EnPnn
-  #elif ENABLED(lerdgeFilSensor)
-    #define FIL_RUNOUT_MODE    { 1 }    // Default mode for sensors E0[, E1[, E2[, E3...]]]. 0:NONE  1:Switch NO  2:Switch NC  7:Motion Sensor Override with M591EnPnn
-  #else
+  #elif DISABLED(lerdgeFilSensor)
     #define FIL_RUNOUT_MODE    { 2 }    // Default mode for sensors E0[, E1[, E2[, E3...]]]. 0:NONE  1:Switch NO  2:Switch NC  7:Motion Sensor Override with M591EnPnn
+  #else
+    #define FIL_RUNOUT_MODE    { 1 }    // Default mode for sensors E0[, E1[, E2[, E3...]]]. 0:NONE  1:Switch NO  2:Switch NC  7:Motion Sensor Override with M591EnPnn
   #endif
   //#define WATCH_ALL_RUNOUT_SENSORS  // Execute runout script on any triggering sensor, not only for the active extruder.
                                       // This is automatically enabled for MIXING_EXTRUDERs.
