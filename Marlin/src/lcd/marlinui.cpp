@@ -1026,8 +1026,10 @@ void MarlinUI::init() {
                   // loop and that the abs of the encoderDiff value is tracked.
                   const float encoderStepRate = encoderMovementSteps / float(ms - lastEncoderMovementMillis) * 1000;
 
-                  if (encoderStepRate >= ENCODER_100X_STEPS_PER_SEC)     encoderMultiplier = 100;
-                  else if (encoderStepRate >= ENCODER_10X_STEPS_PER_SEC) encoderMultiplier = 10;
+                  #if defined(ENCODER_100X_STEPS_PER_SEC)
+                    if (encoderStepRate >= ENCODER_100X_STEPS_PER_SEC)     encoderMultiplier = 100;
+                  #endif
+                  if (encoderStepRate >= ENCODER_10X_STEPS_PER_SEC) encoderMultiplier = 10;
 
                   // Enable to output the encoder steps per second value
                   //#define ENCODER_RATE_MULTIPLIER_DEBUG

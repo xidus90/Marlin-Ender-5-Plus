@@ -1346,7 +1346,9 @@
 #if ENABLED(ENCODER_RATE_MULTIPLIER)
   #define ENCODER_5X_STEPS_PER_SEC    30
   #define ENCODER_10X_STEPS_PER_SEC   80  // (steps/s) Encoder rate for 10x speed
-  #define ENCODER_100X_STEPS_PER_SEC  130  // (steps/s) Encoder rate for 100x speed
+  #if DISABLED(DWIN_MARLINUI_PORTRAIT)
+    #define ENCODER_100X_STEPS_PER_SEC  130  // (steps/s) Encoder rate for 100x speed
+  #endif
 #endif
 
 // Play a beep when the feedrate is changed from the Status Screen
