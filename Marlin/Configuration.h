@@ -718,7 +718,7 @@
  *
  * :[2400, 9600, 19200, 38400, 57600, 115200, 250000, 500000, 1000000]
  */
-#if ANY(MachineEnder3V2, MachineEnder3S1, CrealityViewerKit, MachineCR6, MachineCR6Max, MachineEnder3Touchscreen, MachineCR10Smart, MachineCR10SmartPro, FORCEV2DISPLAY)
+#if ANY(MachineEnder3V2, MachineEnder3S1, CrealityViewerKit, MachineCR6, MachineCR6Max, MachineEnder3Touchscreen, MachineCR10Smart, MachineCR10SmartPro, FORCEV2DISPLAY, MachineEnder2Pro)
   #define BAUDRATE 115200
 #else
   #define BAUDRATE 250000
