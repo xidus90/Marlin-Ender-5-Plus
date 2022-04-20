@@ -2689,6 +2689,8 @@
     #define FILAMENT_CHANGE_UNLOAD_LENGTH      125
   #elif ANY(MachineEnder5Plus, MachineCR10Max, MachineCR10S4, MachineCR10S5)
     #define FILAMENT_CHANGE_UNLOAD_LENGTH   700
+  #elif ANY(MachineEnder2, MachineEnder2Pro)
+    #define FILAMENT_CHANGE_UNLOAD_LENGTH      325  // (mm) The length of filament for a complete unload.
   #else
     #define FILAMENT_CHANGE_UNLOAD_LENGTH      430  // (mm) The length of filament for a complete unload.
   #endif
