@@ -2826,11 +2826,11 @@
     #define Y_MAX_POS 400
     #define ClipClearance 15
   #elif ENABLED(MachineCR10Max)
-    #define X_BED_SIZE 450
-    #define Y_BED_SIZE 450
+    #define X_BED_SIZE 470
+    #define Y_BED_SIZE 470
     #define Z_MAX_POS 470
-    #define X_MAX_POS 450
-    #define Y_MAX_POS 450
+    #define X_MAX_POS 470
+    #define Y_MAX_POS 470
     #define ClipClearance 15
   #elif ENABLED(MachineS5)
     #define X_BED_SIZE 500
@@ -2973,7 +2973,7 @@
       #define MODE_ADDON_2
       #define MODE_ADDON_1
   #endif
-  #if NONE(MachineCR10Orig, MachineCR20, MachineEnder3, MachineEnder3V2, MachineEnder4, MachineEnder5, MachineCRX, Melzi_To_SBoardUpgrade) || ANY(AddonFilSensor, lerdgeFilSensor, DualFilSensors)
+  #if NONE(MachineCR10Orig, MachineCR20, MachineEnder3,  MachineEnder2, MachineEnder2Pro, MachineEnder3V2, MachineEnder4, MachineEnder5, MachineCRX, Melzi_To_SBoardUpgrade) || ANY(AddonFilSensor, lerdgeFilSensor, DualFilSensors)
     #define FIL_RUNOUT_ENABLED { true ENABLED_ADDON} // Default enabled state for sensors E0[, E1[, E2[, E3...]]]. Override with M591EnnSn followed by M500.
   #else
     #define FIL_RUNOUT_ENABLED { false DISABLED_ADDON} // Default enabled state for sensors E0[, E1[, E2[, E3...]]]. Override with M591EnnSn followed by M500.
