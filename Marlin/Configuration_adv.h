@@ -638,7 +638,7 @@
 #if ENABLED(MachineEnder3S1)
   #define E0_AUTO_FAN_PIN PC0
 #else
-  #define E0_AUTO_FAN_PIN -1
+  //#define E0_AUTO_FAN_PIN -1
 #endif
 #define E1_AUTO_FAN_PIN -1
 #define E2_AUTO_FAN_PIN -1
