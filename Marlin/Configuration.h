@@ -691,11 +691,11 @@
   #define LCD_SERIAL_PORT 3
   #define LCD_BAUDRATE 115200
   #define SERIAL_CATCHALL 1
-#elif ANY(MachineCR10Smart, MachineCR10SmartPro)
+#elif ENABLED(MachineCR10Smart)
   #define LCD_SERIAL_PORT 3
   #define LCD_BAUDRATE 115200
   #define SERIAL_CATCHALL 1
-#elif ENABLED(MachineEnder7)
+#elif ANY(MachineEnder7, MachineCR10SmartPro)
   #define LCD_SERIAL_PORT 2
   #define LCD_BAUDRATE 115200
   #define SERIAL_CATCHALL 1
@@ -773,7 +773,9 @@
     #define MOTHERBOARD BOARD_CREALITY_V452
   #elif ENABLED(MachineCR30)
     #define MOTHERBOARD BOARD_CREALITY_V4210
-  #elif ANY(MachineCR6, MachineCR6Max, MachineCR10Smart, MachineCR10SmartPro)
+  #elif ENABLED(MachineCR10SmartPro)
+    #define MOTHERBOARD BOARD_CREALITY_V25S1
+  #elif ANY(MachineCR6, MachineCR6Max, MachineCR10Smart)
     #define MOTHERBOARD BOARD_CREALITY_V453
   #elif ENABLED(MachineEnder2Pro)
     #define MOTHERBOARD BOARD_CREALITY_V423
@@ -2105,7 +2107,7 @@
  * The probe replaces the Z-MIN endstop and is used for Z homing.
  * (Automatically enables USE_PROBE_FOR_Z_HOMING.)
  */
-#if NONE(Creality422, Creality427, MachineEnder6, MachineEnder7, MachineCR5, MachineEnder2Pro, MachineEnder3S1) && DISABLED(Creality42XUseZMin) || DISABLED(ABL_BLTOUCH)
+#if NONE(Creality422, Creality427, MachineEnder6, MachineEnder7, MachineCR5, MachineEnder2Pro, MachineEnder3S1, MachineCR10SmartPro) && DISABLED(Creality42XUseZMin) || DISABLED(ABL_BLTOUCH)
   #define Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN
 #endif
 // Force the use of the probe for Z-axis homing
