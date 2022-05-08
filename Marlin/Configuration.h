@@ -450,7 +450,7 @@
   #endif
 #endif
 
-#if ENABLED(MachineEnder3S1)
+#if ANY(MachineEnder3S1, MachineCR10SmartPro)
   #define SpriteExtruder
 #endif
 
@@ -1854,7 +1854,7 @@
 
 // Enable this feature if all enabled endstop pins are interrupt-capable.
 // This will remove the need to poll the interrupt pins, saving many CPU cycles.
-#if ANY(MachineEnder3V2, MachineEnder3S1, Creality422, MachineEnder2Pro) && NONE(SKRE3Turbo, SKR14Turbo, SKR14, SKR13)
+#if ANY(MachineEnder3V2, MachineEnder3S1, Creality422, MachineEnder2Pro, MachineCR10SmartPro) && NONE(SKRE3Turbo, SKR14Turbo, SKR14, SKR13)
   #define ENDSTOP_INTERRUPTS_FEATURE
 #endif
 
@@ -1870,7 +1870,7 @@
  *
  * :[2,3,4,5,6,7]
  */
-#if ANY(MachineEnder5Plus, CableExtensionNoiseFilter, MachineCR6, MachineCR6Max, MachineEnder6, MachineCR10Smart, MachineCR10SmartPro, MachineSermoonD1)
+#if ANY(MachineEnder5Plus, CableExtensionNoiseFilter, MachineCR6, MachineCR6Max, MachineEnder6, MachineCR10Smart, MachineSermoonD1)
   #define ENDSTOP_NOISE_THRESHOLD 2
 #endif
 
@@ -2331,6 +2331,8 @@
   #define NOZZLE_TO_PROBE_OFFSET { -45, -5, 0 }
 #elif ENABLED(MachineEnder3S1)
   #define NOZZLE_TO_PROBE_OFFSET { -37, -39, -2.0 }
+#elif ENABLED(MachineCR10SmartPro)
+  #define NOZZLE_TO_PROBE_OFFSET { -30, -40, -1.0 }
 #elif (ENABLED(ABL_BLTOUCH) && ENABLED(HotendStock))
   #define NOZZLE_TO_PROBE_OFFSET { -41, -8, 0 }
 #elif ((ANY(ABL_EZABL, ABL_NCSW)) && ENABLED(HotendStock))
