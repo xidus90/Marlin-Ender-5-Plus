@@ -41,6 +41,13 @@
 #define BOARD_NO_NATIVE_USB
 
 //
+// Release PB4 (Y_ENABLE_PIN) from JTAG NRST role
+//
+#ifndef DISABLE_DEBUG
+  #define DISABLE_DEBUG
+#endif
+
+//
 // EEPROM
 //
 #if NO_EEPROM_SELECTED
