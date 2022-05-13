@@ -90,7 +90,12 @@ void onStartup()
 	rtscheck.recdat.head[1] = rtscheck.snddat.head[1] = FHTWO;
 	memset(rtscheck.databuf, 0, sizeof(rtscheck.databuf));
 
-  delay_ms(500); // Delay to allow screen startup
+  #if ENABLED(DWINOS_4)
+    #define DWIN_BOOTUP_DELAY 1500
+  #else
+    #define DWIN_BOOTUP_DELAY 500
+  #endif
+  delay_ms(DWIN_BOOTUP_DELAY); // Delay to allow screen startup
   SetTouchScreenConfiguration();
   rtscheck.RTS_SndData(StartSoundSet, SoundAddr);
   delay_ms(400); // Delay to allow screen to configure
