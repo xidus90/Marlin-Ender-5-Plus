@@ -130,11 +130,6 @@
 #define E0_ENABLE_PIN               X_ENABLE_PIN
 
 //
-// Release PB4 (Y_ENABLE_PIN) from JTAG NRST role
-//
-#define DISABLE_DEBUG
-
-//
 // Temperature Sensors
 //
 #define TEMP_0_PIN                          PC5   // TH1

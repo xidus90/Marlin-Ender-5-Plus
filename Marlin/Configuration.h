@@ -55,6 +55,7 @@
 //#define MachineEnder2Pro
 //#define MachineEnder3V2
 //#define MachineEnder3S1
+//#define MachineEnder3S1_F4
 //#define MachineEnder3Max
 //#define MachineEnder3Pro422
 //#define MachineEnder3Pro427
@@ -85,7 +86,7 @@
 // Enable this if you used a plug and play creality e3d or mosquito kit and kept the Creality thermistor
 //#define CrealityThermistor
 
-//#define SlicePT1000 // Enable this if you have a mosquito with the newer PT1000 sensor
+#define SlicePT1000 // Enable this if you have a mosquito with the newer PT1000 sensor
 //#define PID50W //Set PID for 50W Heater
 /*
  * Select these if you have changed to a high performance extruder
@@ -441,6 +442,11 @@
   #endif
 #endif
 
+#if ENABLED(MachineEnder3S1_F4)
+  #define MachineEnder3S1
+#endif
+
+
 #if ENABLED(MachineEnder3S1)
   #if NONE(ABL_NCSW, ABL_EZABL, ABL_BLTOUCH)
     #define ABL_BLTOUCH
@@ -763,7 +769,9 @@
     #define MOTHERBOARD BOARD_CREALITY_V427
   #elif ENABLED(Creality422)
     #define MOTHERBOARD BOARD_CREALITY_V4
-  #elif ENABLED(MachineEnder3S1)
+  #elif ENABLED(MachineEnder3S1_F4)
+    #define MOTHERBOARD BOARD_CREALITY_V24S1_301F4
+  #elif ENABLED(MachineEnder3S1) && DISABLED(MachineEnder3S1_F4)
     #define MOTHERBOARD BOARD_CREALITY_V24S1_301
   #elif (ENABLED(MachineCR10Orig) && DISABLED(Melzi_To_SBoardUpgrade))
     #define MOTHERBOARD BOARD_MELZI_CREALITY
@@ -3112,7 +3120,7 @@
  * NOTE: Requires a lot of PROGMEM!
  */
 #if ENABLED(MachineLargeROM)
-  #define DEBUG_LEVELING_FEATURE
+  //#define DEBUG_LEVELING_FEATURE
 #endif
 
 #if ANY(MESH_BED_LEVELING, AUTO_BED_LEVELING_UBL, PROBE_MANUALLY)
