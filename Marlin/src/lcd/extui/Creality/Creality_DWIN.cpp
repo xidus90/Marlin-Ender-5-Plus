@@ -65,6 +65,7 @@ namespace ExtUI
   bool FanStatus = true;
   bool AutohomeKey = false;
   unsigned char AutoHomeIconNum;
+  int16_t userConfValidation = 0;
 
   uint8_t lastPauseMsgState = 0;
 
@@ -72,8 +73,10 @@ namespace ExtUI
   uint8_t dwin_settings_version = 1;
 
   bool reEntryPrevent = false;
+  uint8_t reEntryCount = 0;
   uint16_t idleThrottling = 0;
 
+  bool pause_resume_selected = false;
 
   #if HAS_PID_HEATING
     uint16_t pid_hotendAutoTemp = 150;
@@ -87,7 +90,12 @@ void onStartup()
 	rtscheck.recdat.head[1] = rtscheck.snddat.head[1] = FHTWO;
 	memset(rtscheck.databuf, 0, sizeof(rtscheck.databuf));
 
-  delay_ms(500); // Delay to allow screen startup
+  #if ENABLED(DWINOS_4)
+    #define DWIN_BOOTUP_DELAY 1500
+  #else
+    #define DWIN_BOOTUP_DELAY 500
+  #endif
+  delay_ms(DWIN_BOOTUP_DELAY); // Delay to allow screen startup
   SetTouchScreenConfiguration();
   rtscheck.RTS_SndData(StartSoundSet, SoundAddr);
   delay_ms(400); // Delay to allow screen to configure
@@ -155,11 +163,15 @@ void onStartup()
 
 void onIdle()
 {
-  if (reEntryPrevent)
-    return;
 
-  if (rtscheck.RTS_RecData() > 0 && (rtscheck.recdat.data[0]!=0 || rtscheck.recdat.addr!=0))
+   while (rtscheck.RTS_RecData() > 0 && (rtscheck.recdat.data[0]!=0 || rtscheck.recdat.addr!=0))
 		rtscheck.RTS_HandleData();
+
+  if (reEntryPrevent && reEntryCount < 120) {
+    reEntryCount++;
+    return;
+  }
+  reEntryCount = 0;
 
   if(idleThrottling++ < 750){
     return;
@@ -171,7 +183,7 @@ void onIdle()
   rtscheck.RTS_SndData(getTargetTemp_celsius(H0), NozzlePreheat);
 	rtscheck.RTS_SndData(getTargetTemp_celsius(BED), BedPreheat);
 
-  if(awaitingUserConfirm() && lastPauseMsgState!=ExtUI::pauseModeStatus)
+  if(awaitingUserConfirm() && (lastPauseMsgState!=ExtUI::pauseModeStatus || userConfValidation > 99))
   {
     switch(ExtUI::pauseModeStatus)
       {
@@ -194,8 +206,23 @@ void onIdle()
       case PAUSE_MESSAGE_STATUS: SERIAL_ECHOLNPGM_P(PSTR("PauseStatus")); break;
       default: onUserConfirmRequired(PSTR("Confirm Continue")); break;
     }
+    userConfValidation = 0;
 
+  } else if (pause_resume_selected && !awaitingUserConfirm()) {
+      rtscheck.RTS_SndData(ExchangePageBase + 53, ExchangepageAddr);
+      pause_resume_selected = false;
+      userConfValidation = 0;
   }
+  else if (awaitingUserConfirm() && !pause_resume_selected)
+  {
+    userConfValidation++;
+  }
+  else if (awaitingUserConfirm() && pause_resume_selected)
+  {
+    pause_resume_selected = false;
+    userConfValidation = 100;
+  }
+
 
   reEntryPrevent = true;
   idleThrottling = 0;
@@ -1775,25 +1802,31 @@ void RTSSHOW::RTS_HandleData()
 
       if (recdat.data[0] == 1) //Filament is out, resume / resume selected on screen
       {
-
-        if(
-        #if DISABLED(FILAMENT_RUNOUT_SENSOR) || ENABLED(FILAMENT_MOTION_SENSOR)
-          true
-        #elif NUM_RUNOUT_SENSORS > 1
-          (getActiveTool() == E0 && READ(FIL_RUNOUT1_PIN) != FIL_RUNOUT1_STATE) || (getActiveTool() == E1 && READ(FIL_RUNOUT2_PIN) != FIL_RUNOUT2_STATE)
-        #else
-          (getActiveTool() == E0 && READ(FIL_RUNOUT1_PIN) != FIL_RUNOUT1_STATE)
-        #endif
-         || (ExtUI::pauseModeStatus != PAUSE_MESSAGE_PURGE && ExtUI::pauseModeStatus != PAUSE_MESSAGE_OPTION)
-        ) {
-          SERIAL_ECHOLNPGM_P(PSTR("Resume Yes during print"));
-          //setHostResponse(1); //Send Resume host prompt command
-          setPauseMenuResponse(PAUSE_RESPONSE_RESUME_PRINT);
+        SERIAL_ECHOLNPGM_P(PSTR("Resume Yes during print"));
+        if (ExtUI::pauseModeStatus != PAUSE_MESSAGE_PURGE && ExtUI::pauseModeStatus != PAUSE_MESSAGE_OPTION)
+        {
+          //setPauseMenuResponse(PAUSE_RESPONSE_RESUME_PRINT);
           setUserConfirmed();
-          RTS_SndData(1 + CEIconGrap, IconPrintstatus);
-          PrinterStatusKey[1] = 3;
-          RTS_SndData(ExchangePageBase + 53, ExchangepageAddr);
-          //reEntryPrevent = false;
+          //PrinterStatusKey[1] = 3;
+          //pause_resume_selected = true;
+        }
+        else if (ExtUI::pauseModeStatus == PAUSE_MESSAGE_PURGE || ExtUI::pauseModeStatus == PAUSE_MESSAGE_OPTION) {
+          #if ENABLED(FILAMENT_RUNOUT_SENSOR)
+            if(getFilamentRunoutState() && getFilamentRunoutEnabled(getActiveTool()))
+              ExtUI::setFilamentRunoutEnabled(false, getActiveTool());
+            else {
+              setPauseMenuResponse(PAUSE_RESPONSE_RESUME_PRINT);
+              setUserConfirmed();
+              PrinterStatusKey[1] = 3;
+              pause_resume_selected = true;
+            }
+
+          #else
+            setPauseMenuResponse(PAUSE_RESPONSE_RESUME_PRINT);
+            setUserConfirmed();
+            PrinterStatusKey[1] = 3;
+            pause_resume_selected = true;
+          #endif
         }
       }
       else if (recdat.data[0] == 0) // Filamet is out, Cancel Selected
@@ -2072,7 +2105,7 @@ void SetTouchScreenConfiguration() {
   if (Settings.display_sound) cfg_bits |= 1UL << 3; // 3: audio
   if (Settings.display_standby) cfg_bits |= 1UL << 2; // 2: backlight on standby
   if(Settings.screen_rotation==10) cfg_bits |= 1UL << 1; // 1 & 0: Inversion
-  #if ENABLED(MachineCR10Smart)
+  #if ANY(MachineCR10Smart, MachineCR10SmartPro )
     cfg_bits |= 1UL << 0; // Portrait Mode or 800x480 display has 0 point rotated 90deg from 480x272 display
   #endif
 
@@ -2275,24 +2308,26 @@ void onUserConfirmRequired(const char *const msg)
     case PAUSE_MESSAGE_INSERT:
     {
       rtscheck.RTS_SndData(ExchangePageBase + 78, ExchangepageAddr);
-      onStatusChanged("Load Filament to Continue");
+      onStatusChanged("Load Filament to           Continue");
       break;
     }
     case PAUSE_MESSAGE_HEAT:
     {
       rtscheck.RTS_SndData(ExchangePageBase + 78, ExchangepageAddr);
-      onStatusChanged("Press Yes to Reheat");
+      onStatusChanged("Add Filament and Press    Yes to Reheat");
       break;
     }
     #if DISABLED(ADVANCED_PAUSE_CONTINUOUS_PURGE)
       case PAUSE_MESSAGE_PURGE:
       {
         rtscheck.RTS_SndData(ExchangePageBase + 78, ExchangepageAddr);
-        char newMsg[40] = "Yes to Continue           No to ";
-        if(TERN0(FILAMENT_RUNOUT_SENSOR, ExtUI::getFilamentRunoutState()))
-          strcat(newMsg, "Disable");
+        char newMsg[40] = "Yes to ";
+        if(TERN1(FILAMENT_RUNOUT_SENSOR, (!ExtUI::getFilamentRunoutState() && getFilamentRunoutEnabled())))
+          strcat(newMsg, "Continue");
         else
-          strcat(newMsg, "Purge");
+          strcat(newMsg, "Disable ");
+        
+        strcat(newMsg, "           No to Purge");
         onStatusChanged(newMsg);
         break;
       }
@@ -2302,11 +2337,13 @@ void onUserConfirmRequired(const char *const msg)
     case PAUSE_MESSAGE_OPTION:
     {
       rtscheck.RTS_SndData(ExchangePageBase + 78, ExchangepageAddr);
-      char newMsg[40] = "Yes to Continue           No to ";
-      if(TERN0(FILAMENT_RUNOUT_SENSOR, ExtUI::getFilamentRunoutState()))
-        strcat(newMsg, "Disable");
-      else
-        strcat(newMsg, "Purge");
+      char newMsg[40] = "Yes to ";
+        if(TERN1(FILAMENT_RUNOUT_SENSOR, (!ExtUI::getFilamentRunoutState() && getFilamentRunoutEnabled())))
+          strcat(newMsg, "Continue");
+        else
+          strcat(newMsg, "Disable ");
+        
+        strcat(newMsg, "           No to Purge");
       onStatusChanged(newMsg);
       break;
     }
@@ -2465,17 +2502,17 @@ void onLoadSettings(const char *buff)
   SetTouchScreenConfiguration();
 }
 
-void onConfigurationStoreWritten(bool success)
+void onSettingsStored(bool success)
 {
-	SERIAL_ECHOLNPGM_P(PSTR("==onConfigurationStoreWritten=="));
+	SERIAL_ECHOLNPGM_P(PSTR("==onSettingsStored=="));
 	// This is called after the entire EEPROM has been written,
 	// whether successful or not.
 }
 
-void onConfigurationStoreRead(bool success)
+void onSettingsLoaded(bool success)
 {
 	SERIAL_ECHOLNPGM_P(PSTR("==onConfigurationStoreRead=="));
-  #if HAS_MESH && (ANY(MachineCR10SPro, MachineEnder5Plus, MachineCR10Max) || ENABLED(FORCE10SPRODISPLAY))
+  #if HAS_MESH
     if (ExtUI::getMeshValid())
     {
       uint8_t abl_probe_index = 0;
@@ -2534,8 +2571,37 @@ void onConfigurationStoreRead(bool success)
     onStatusChanged("PID Tune Finished");
   }
 #endif
-void onMeshLevelingStart() {
+void onLevelingStart() {
 
+}
+
+void onLevelingDone() {
+  #if HAS_MESH
+    if (ExtUI::getMeshValid())
+    {
+      uint8_t abl_probe_index = 0;
+        for(uint8_t outer = 0; outer < GRID_MAX_POINTS_Y; outer++)
+        {
+          for (uint8_t inner = 0; inner < GRID_MAX_POINTS_X; inner++)
+          {
+            uint8_t x_Point = inner;
+            bool zig = (outer & 1);
+            if (zig) x_Point = (GRID_MAX_POINTS_X - 1) - inner;
+            xy_uint8_t point = {x_Point, outer};
+            rtscheck.RTS_SndData(ExtUI::getMeshPoint(point) * 1000, AutolevelVal + (abl_probe_index * 2));
+            ++abl_probe_index;
+          }
+        }
+
+      rtscheck.RTS_SndData(3, AutoLevelIcon); //2=On, 3=Off
+      setLevelingActive(true);
+    }
+    else
+    {
+      rtscheck.RTS_SndData(2, AutoLevelIcon); /*Off*/
+      setLevelingActive(false);
+    }
+  #endif
 }
 
 void onSteppersEnabled()
@@ -2543,7 +2609,7 @@ void onSteppersEnabled()
 
 }
 
-void onPrintFinished()
+void onPrintDone()
 {
 
 }
@@ -2553,7 +2619,7 @@ void onHomingStart()
 
 }
 
-void onHomingComplete()
+void onHomingDone()
 {
 
 }
